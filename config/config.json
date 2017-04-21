@@ -1,0 +1,4 @@
+{
+  "baseUrl" : "https://www.cybersport.ru",
+  "gamesClasses" : [ "dota2", "cs-go", "lol", "sc2" ]
+}

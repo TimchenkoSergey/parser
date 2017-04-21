@@ -1,0 +1,23 @@
+{
+  "name": "parser1",
+  "version": "1.0.0",
+  "description": "paresr",
+  "main": "app.js",
+  "scripts": {
+    "start": "babel-node app.js --presets es2015,stage-2"
+  },
+  "author": "Sergey Timchenko",
+  "license": "MIT",
+  "dependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-riot": "^1.1.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "cheerio": "^0.22.0",
+    "mysql": "^2.13.0",
+    "nconf": "^0.8.4",
+    "request": "^2.81.0",
+    "sequelize": "^3.30.4"
+  }
+}
