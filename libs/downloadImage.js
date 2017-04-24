@@ -6,9 +6,9 @@ import config       from '../config';
 
 export default downloadImage;
 
-async function downloadImage(path) {
+async function downloadImage(pathToImage) {
     try {
-        const url      = path ? config.get('baseUrl') + path : '';
+        const url      = pathToImage ? config.get('baseUrl') + pathToImage : '';
         const fileName = getFileName(url);
         const path     = `./public/img/${fileName}`;
         const exists   = await isFileExists(path);

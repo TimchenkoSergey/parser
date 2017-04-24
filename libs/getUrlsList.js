@@ -25,7 +25,7 @@ async function getUrlsForPage(url, selector) {
     let   $         = getLoadedHtml(response.body);
     const links     = $(selector);
     const nextPage  = $('.main-wrap .main ul.pager li.next a');
-
+    
     if (!nextPage.text()) {
         result.all = true;
     }
