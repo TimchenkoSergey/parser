@@ -1,8 +1,10 @@
+import config from '../config';
+
 export default getFileName;
 
 function getFileName(url) {
     if (url === '') {
-        return 'no-photo-gamer.svg';
+        return config.get('noPhotoImage');
     }
     
     const urlParts = url.split('/');

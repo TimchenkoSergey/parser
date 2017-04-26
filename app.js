@@ -1,19 +1,38 @@
 import 'babel-polyfill';
-import getTeamsInformation from './libs/getTeamsInformation';
-import getPlayersInformation from './libs/getPlayersInformation';
-import fill from './model/dbInit';
-import getCupsInformation from './libs/getCupsInformation';
+import config            from './config';
+import getTeams          from './libs/getTeamsInformation';
+import getPlayers        from './libs/getPlayersInformation';
+import getCups           from './libs/getCupsInformation';
+import getMatchesPast    from './libs/getMatchesPastInformation';
+import getMatchesFeature from './libs/getMatchesFeatureInformation';
+import fillDb            from './model/fillDb';
 
-let urlCups = 'https://www.cybersport.ru/base/tournaments/?MUL_MODE=&page=';
-let urlTeams = 'https://www.cybersport.ru/base/teams/?MUL_MODE=&page=';
-let urlPlayers = 'https://www.cybersport.ru/AJAX/cached2/gamer_section_list.php?active=Y&sort_field=0&sort_order=0&NAME=&page=';
+const BASE_URL            = config.get('baseUrl');
+const TEAMS_URL           = BASE_URL + config.get('urls:teams');
+const EVENTS_URL          = BASE_URL + config.get('urls:events');
+const PLAYERS_URL         = BASE_URL + config.get('urls:players');
+const MATCHES_PAST_URL    = BASE_URL + config.get('urls:matchesPast');
+const MATCHES_FEATURE_URL = BASE_URL + config.get('urls:matchesFeature');
 
 start();
 
 async function start() {
-    const teamsArray = await getTeamsInformation(urlTeams);
-    const cups = await getCupsInformation(urlCups);
-    const playersArray = await getPlayersInformation(urlPlayers, teamsArray, cups);
-    
-    await fill(teamsArray, cups, playersArray);
+    try {
+        const teams          = await getTeams(TEAMS_URL);
+        const events         = await getCups(EVENTS_URL);
+        const players        = await getPlayers(PLAYERS_URL, teams, events);
+        const pastMatches    = await getMatchesPast(MATCHES_PAST_URL, teams, events);
+        const featureMatches = await getMatchesFeature(MATCHES_FEATURE_URL, teams, events);
+
+        await fillDb(
+            teams,
+            events,
+            players,
+            pastMatches,
+            featureMatches
+        );
+    }
+    catch (err) {
+        console.log(err);
+    }
 }

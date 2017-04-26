@@ -1,14 +1,16 @@
-import getLoadedHtml from './getLoadedHtml';
-import sendRequest   from './sendRequest'
+import getLoadedHtml   from './getLoadedHtml';
+import sendRequest     from './sendRequest'
+import isNextPageExist from './isNextPageExist'
 
 export default getUrlsList;
 
 async function getUrlsList(url, selector) {
     let result = [];
 
-    for (let i = 1; i < 2; i++) {
-        const urlPage  = url + i;
-        const urls = await getUrlsForPage(urlPage, selector);
+    for (let i = 1; ; i++) {
+        const urlPage = url + i;
+        const urls    = await getUrlsForPage(urlPage, selector);
+        
         result.push(...urls.links);
 
         if (urls.all) {
@@ -20,15 +22,12 @@ async function getUrlsList(url, selector) {
 }
 
 async function getUrlsForPage(url, selector) {
+    let   result    = { links : [] };
     const response  = await sendRequest({ url });
-    let   result    = { links : [], all : false };
-    let   $         = getLoadedHtml(response.body);
+    const $         = getLoadedHtml(response.body);
     const links     = $(selector);
-    const nextPage  = $('.main-wrap .main ul.pager li.next a');
-    
-    if (!nextPage.text()) {
-        result.all = true;
-    }
+
+    result.all = !isNextPageExist($);
 
     links.each(function() {
         const link = $(this).attr('href');

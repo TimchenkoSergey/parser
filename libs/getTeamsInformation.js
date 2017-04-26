@@ -21,7 +21,7 @@ async function getTeamsInformation(url) {
         let   id     = 1;
         
         for (let i = 0, len = links.length; i < len; i++) {
-            let   response  = await sendRequest(config.get('baseUrl') + links[i].link);
+            const response  = await sendRequest(config.get('baseUrl') + links[i].link);
             const $         = getLoadedHtml(response.body);
             const name      = $(TEAM_NAME_SELECTOR).text().trim();
             const logoPath  = $(TEAM_LOGO_SELECTOR).attr('src');

@@ -1,4 +1,18 @@
 {
   "baseUrl" : "https://www.cybersport.ru",
-  "gamesClasses" : [ "dota2", "cs-go", "lol", "sc2" ]
+  "gamesClasses" : [ "dota2", "cs-go", "lol", "sc2" ],
+  "pathToImages" : "./public/img/",
+  "noPhotoImage" : "no-photo-gamer.svg",
+  "urls" : {
+    "events"         : "/base/tournaments/?MUL_MODE=&page=",
+    "teams"          : "/base/teams/?MUL_MODE=&page=",
+    "players"        : "/AJAX/cached2/gamer_section_list.php?active=Y&sort_field=0&sort_order=0&NAME=&page=",
+    "matchesPast"    : "/base/match/?active_elems=past&game=&from=&to=&name=&MUL_MODE=&page=",
+    "matchesFeature" : "/base/match/?active_elems=future&game=&from=&to=&name=&MUL_MODE=&page="
+  },
+  "db" : {
+    "name"     : "dota",
+    "userName" : "root",
+    "password" : "sst291196meiddD"
+  }
 }

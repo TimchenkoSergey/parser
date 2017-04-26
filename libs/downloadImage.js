@@ -10,7 +10,7 @@ async function downloadImage(pathToImage) {
     try {
         const url      = pathToImage ? config.get('baseUrl') + pathToImage : '';
         const fileName = getFileName(url);
-        const path     = `./public/img/${fileName}`;
+        const path     = config.get('pathToImages') + fileName;
         const exists   = await isFileExists(path);
         
         if (!exists) {
