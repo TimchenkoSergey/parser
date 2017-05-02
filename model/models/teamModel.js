@@ -1,5 +1,15 @@
 export default getTeamModel;
 
+/**
+ * @function
+ * @name getTeamModel
+ * @description
+ * Модель описывающая таблицу команды.
+ *
+ * @param {object} sequelize Экземпляр класса Sequelize позволяющий инициализировать и создать таблицу.
+ * @param {object} Sequelize Sequelize класс представляющий типы данных.
+ * @return {object} Объект созданой таблицы позволяющий работать с ней.
+ **/
 async function getTeamModel(sequelize, Sequelize) {
     const team = sequelize.define('team', {
         team_id : {

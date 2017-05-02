@@ -8,6 +8,16 @@ import getMatchesFeatureModel from './models/matchesFeatureModel';
 
 export default getModels;
 
+/**
+ * @function
+ * @name getModels
+ * @description
+ * Возвращает объект с объектом таблиц для большего удобства.
+ *
+ * @param {object} sequelize Экземпляр класса Sequelize позволяющий инициализировать и создать таблицу.
+ * @param {object} Sequelize Sequelize класс представляющий типы данных.
+ * @return {object} Объект с объектами таблиц.
+ **/
 async function getModels(sequelize, Sequelize) {
     const team           = await getTeamModel(sequelize, Sequelize);
     const cup            = await getCupModel(sequelize, Sequelize);

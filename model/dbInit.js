@@ -9,6 +9,12 @@ const sequelize = new Sequelize(
 
 export default dbInit;
 
+/**
+ * @function
+ * @name dbInit
+ * @description
+ * Создаем соединение с базой.
+ **/
 async function dbInit() {
     try {
         await sequelize.authenticate();

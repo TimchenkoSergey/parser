@@ -1,7 +1,17 @@
 export default getMatchesPastModel;
 
+/**
+ * @function
+ * @name getMatchesPastModel
+ * @description
+ * Модель описывающая таблицу прошедших игр и их результаты.
+ *
+ * @param {object} sequelize Экземпляр класса Sequelize позволяющий инициализировать и создать таблицу.
+ * @param {object} Sequelize Sequelize класс представляющий типы данных.
+ * @return {object} Объект созданой таблицы позволяющий работать с ней.
+ **/
 async function getMatchesPastModel(sequelize, Sequelize) {
-    const matchesPast = sequelize.define('matches_past', {
+    const matchesPast = sequelize.define('past_match', {
         competition_past_id : {
             type       : Sequelize.INTEGER,
             primaryKey : true
