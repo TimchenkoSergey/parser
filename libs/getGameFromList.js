@@ -2,20 +2,20 @@ import config from '../config';
 
 export default getGameFromList;
 
-function getGameFromList(gameClass) {
-    let result  = '';
+function getGameFromList(elementClass) {
+    let result;
     
-    if (gameClass) {
-        let classes = gameClass.toLowerCase();
-
+    if (elementClass) {
         const games = config.get('gamesClasses');
 
-        games.forEach(function (item) {
-            if (classes.indexOf(item) >= 0) {
-                result = item;
-            }
+        result = games.find(function (item) {
+            return elementClass.toLowerCase().indexOf(item) >= 0; 
         });
     }
 
-    return result;
+    if (result) {
+        return result;
+    }
+    
+    return '';
 }

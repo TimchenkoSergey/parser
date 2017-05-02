@@ -4,6 +4,6 @@ const model = {
 
 export default model;
 
-async function save(table, options) {
+function save(table, options) {
     table.create(options);
 }
