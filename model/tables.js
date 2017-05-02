@@ -6,11 +6,11 @@ import getPlayerHistoryModel  from './models/playerHistoryModel';
 import getMatchesPastModel    from './models/matchesPastModel';
 import getMatchesFeatureModel from './models/matchesFeatureModel';
 
-export default getModels;
+export default getTables;
 
 /**
  * @function
- * @name getModels
+ * @name getTables
  * @description
  * Возвращает объект с объектом таблиц для большего удобства.
  *
@@ -18,7 +18,7 @@ export default getModels;
  * @param {object} Sequelize Sequelize класс представляющий типы данных.
  * @return {object} Объект с объектами таблиц.
  **/
-async function getModels(sequelize, Sequelize) {
+async function getTables(sequelize, Sequelize) {
     const team           = await getTeamModel(sequelize, Sequelize);
     const cup            = await getCupModel(sequelize, Sequelize);
     const player         = await getPlayerModel(sequelize, Sequelize);

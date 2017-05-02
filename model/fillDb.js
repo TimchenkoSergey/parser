@@ -1,4 +1,4 @@
-import getModels          from './models';
+import getTables          from './tables';
 import dbInit             from './dbInit';
 import saveTeams          from '../cyberSport/model/saveTeams';
 import saveEvents         from '../cyberSport/model/saveEvents';
@@ -26,7 +26,7 @@ async function fillDB(teams, events, players, pastMatches, featureMatches) {
         sequelize
     } = await dbInit();
     //Объект с объектами таблиц.
-    const models = await getModels(sequelize, Sequelize);
+    const models = await getTables(sequelize, Sequelize);
     
     saveTeams(models, teams);
     saveEvents(models, events);

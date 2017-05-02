@@ -2,10 +2,19 @@ import model from '../../model/model';
 
 export default saveFeatureMatches;
 
-function saveFeatureMatches(models, matches) {
+/**
+ * @function
+ * @name saveFeatureMatches
+ * @description
+ * Сохраняет переданные данные из массива в таблицу.
+ *
+ * @param {object} tables Объект с объектами таблиц.
+ * @param {object[]} matches Массив объектов с информацией о будущих матчах.
+ **/
+function saveFeatureMatches(tables, matches) {
     matches.forEach(function (match) {
         try {
-            model.save(models.matchesFeature,  {
+            model.save(tables.matchesFeature,  {
                 competition_feature_id : +match.id,
                 event_id               : +match.eventID,
                 first_team_id          : +match.firstTeamID,

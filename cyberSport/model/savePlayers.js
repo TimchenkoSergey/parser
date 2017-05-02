@@ -3,10 +3,19 @@ import savePlayerHistory from './savePlayerHistory';
 
 export default savePlayers;
 
-function savePlayers(models, players) {
+/**
+ * @function
+ * @name savePlayers
+ * @description
+ * Сохраняет переданные данные из массива в таблицу.
+ *
+ * @param {object} tables Объект с объектами таблиц.
+ * @param {object[]} histories Массив объектов с информацией о игроках.
+ **/
+function savePlayers(tables, players) {
     players.forEach(function (player) {
         try {
-            model.save(models.player, {
+            model.save(tables.player, {
                 player_id : +player.id,
                 rating    : +player.rating,
                 rating_gb : +player.gbRating,
@@ -17,7 +26,7 @@ function savePlayers(models, players) {
             });
     
             if (player.history && player.history.length > 0) {
-                savePlayerHistory(models, player.history);
+                savePlayerHistory(tables, player.history);
             }
         }
         catch (err) {

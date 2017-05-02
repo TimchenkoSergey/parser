@@ -3,10 +3,19 @@ import saveCups from './saveCups';
 
 export default savePlayerHistory;
 
-function savePlayerHistory(models, histories) {
+/**
+ * @function
+ * @name savePlayerHistory
+ * @description
+ * Сохраняет переданные данные из массива в таблицу.
+ *
+ * @param {object} tables Объект с объектами таблиц.
+ * @param {object[]} histories Массив объектов с информацией о истории игр игрока в командах.
+ **/
+function savePlayerHistory(tables, histories) {
     histories.forEach(function (history) {
         try {
-            model.save(models.playerHistory, {
+            model.save(tables.playerHistory, {
                 history_id : +history.historyID,
                 team_id    : +history.teamID,
                 player_id  : +history.playerID,
@@ -18,7 +27,7 @@ function savePlayerHistory(models, histories) {
             });
     
             if (history.cups && history.cups.length > 0) {
-                saveCups(models, history.cups);
+                saveCups(tables, history.cups);
             }
         }
         catch (err) {
