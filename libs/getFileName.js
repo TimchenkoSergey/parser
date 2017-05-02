@@ -2,6 +2,15 @@ import config from '../config';
 
 export default getFileName;
 
+/**
+ * @function
+ * @name getFileName
+ * @description
+ * Парсит URL файла и возвращает уникальное название для файла.
+ *
+ * @param {string} url URL файла.
+ * @return {string} fileName Название файла.
+ **/
 function getFileName(url) {
     if (url === '') {
         return config.get('noPhotoImage');
