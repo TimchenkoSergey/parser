@@ -20,7 +20,7 @@ export default fillDB;
  * @param {object[]} pastMatches    Массив с данными для таблицы с информацией о прошедших матчах.
  * @param {object[]} featureMatches Массив с данными для таблицы с информацией о будущих матчах.
  **/
-async function fillDB(teams/*, events, players, pastMatches, featureMatches*/) {
+async function fillDB(teams, events, players, pastMatches, featureMatches) {
     const {
         Sequelize,
         sequelize
@@ -29,8 +29,8 @@ async function fillDB(teams/*, events, players, pastMatches, featureMatches*/) {
     const models = await getTables(sequelize, Sequelize);
     
     await saveTeams(models, teams);
-    /*await saveEvents(models, events);
+    await saveEvents(models, events);
     await savePlayers(models, players);
     await savePastMatches(models, pastMatches);
-    await saveFeatureMatches(models, featureMatches);*/
+    await saveFeatureMatches(models, featureMatches);
 }

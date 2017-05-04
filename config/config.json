@@ -3,6 +3,7 @@
   "gamesClasses" : [ "dota2", "cs-go", "lol", "sc2" ],
   "pathToImages" : "./public/img/",
   "noPhotoImage" : "no-photo-gamer.svg",
+  "fillDB" : false,
   "urls" : {
     "events"         : "/base/tournaments/?MUL_MODE=&page=",
     "teams"          : "/base/teams/?MUL_MODE=&page=",
