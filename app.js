@@ -6,6 +6,7 @@ import getCups           from './cyberSport/parser/getCupsInformation';
 import getMatchesPast    from './cyberSport/parser/getMatchesPastInformation';
 import getMatchesFeature from './cyberSport/parser/getMatchesFeatureInformation';
 import fillDb            from './model/fillDb';
+import updateDb          from './model/updateDb';
 
 const BASE_URL            = config.get('baseUrl');
 const TEAMS_URL           = BASE_URL + config.get('urls:teams');
@@ -41,7 +42,13 @@ async function start() {
             ); 
         }
         else {
-            
+            await updateDb(
+                teams,
+                events,
+                players,
+                pastMatches,
+                featureMatches
+            );
         }
     }
     catch (err) {
