@@ -12,10 +12,10 @@ export default savePlayerHistory;
  * @param {object} tables Объект с объектами таблиц.
  * @param {object[]} histories Массив объектов с информацией о истории игр игрока в командах.
  **/
-function savePlayerHistory(tables, histories) {
-    histories.forEach(function (history) {
+async function savePlayerHistory(tables, histories) {
+    histories.forEach(async function (history) {
         try {
-            model.save(tables.playerHistory, {
+            await model.save(tables.playerHistory, {
                 history_id : +history.historyID,
                 team_id    : +history.teamID,
                 player_id  : +history.playerID,
@@ -27,7 +27,7 @@ function savePlayerHistory(tables, histories) {
             });
     
             if (history.cups && history.cups.length > 0) {
-                saveCups(tables, history.cups);
+                await saveCups(tables, history.cups);
             }
         }
         catch (err) {

@@ -26,17 +26,17 @@ async function start() {
     try {
         //Парсинг всех нужных данных
         const teams          = await getTeams(TEAMS_URL);
-        const events         = await getCups(EVENTS_URL);
+        /*const events         = await getCups(EVENTS_URL);
         const players        = await getPlayers(PLAYERS_URL, teams, events);
         const pastMatches    = await getMatchesPast(MATCHES_PAST_URL, teams, events);
-        const featureMatches = await getMatchesFeature(MATCHES_FEATURE_URL, teams, events);
+        const featureMatches = await getMatchesFeature(MATCHES_FEATURE_URL, teams, events);*/
 
         await fillDb(
             teams,
-            events,
+            /*events,
             players,
             pastMatches,
-            featureMatches
+            featureMatches*/
         );
     }
     catch (err) {

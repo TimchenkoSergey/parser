@@ -14,13 +14,13 @@ export default fillDB;
  * @description
  * Заполняет базу данными.
  *
- * @param {object} teams          Массив с данными для таблицы с информацией о командах.
- * @param {object} events         Массив с данными для таблицы с информацией о турнирах.
- * @param {object} players        Массив с данными для таблицы с информацией о игроках.
- * @param {object} pastMatches    Массив с данными для таблицы с информацией о прошедших матчах.
- * @param {object} featureMatches Массив с данными для таблицы с информацией о будущих матчах.
+ * @param {object[]} teams          Массив с данными для таблицы с информацией о командах.
+ * @param {object[]} events         Массив с данными для таблицы с информацией о турнирах.
+ * @param {object[]} players        Массив с данными для таблицы с информацией о игроках.
+ * @param {object[]} pastMatches    Массив с данными для таблицы с информацией о прошедших матчах.
+ * @param {object[]} featureMatches Массив с данными для таблицы с информацией о будущих матчах.
  **/
-async function fillDB(teams, events, players, pastMatches, featureMatches) {
+async function fillDB(teams/*, events, players, pastMatches, featureMatches*/) {
     const {
         Sequelize,
         sequelize
@@ -28,9 +28,9 @@ async function fillDB(teams, events, players, pastMatches, featureMatches) {
     //Объект с объектами таблиц.
     const models = await getTables(sequelize, Sequelize);
     
-    saveTeams(models, teams);
-    saveEvents(models, events);
-    savePlayers(models, players);
-    savePastMatches(models, pastMatches);
-    saveFeatureMatches(models, featureMatches);
+    await saveTeams(models, teams);
+    /*await saveEvents(models, events);
+    await savePlayers(models, players);
+    await savePastMatches(models, pastMatches);
+    await saveFeatureMatches(models, featureMatches);*/
 }

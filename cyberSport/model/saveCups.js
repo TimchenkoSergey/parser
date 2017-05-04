@@ -11,10 +11,10 @@ export default saveCups;
  * @param {object} tables Объект с объектами таблиц.
  * @param {object[]} cups Массив объектов с информацией о выграных игроком кубков.
  **/
-function saveCups(tables, cups) {
-    cups.forEach(function (cup) {
+async function saveCups(tables, cups) {
+    cups.forEach(async function (cup) {
         try {
-            model.save(tables.cup, {
+            await model.save(tables.cup, {
                 cup_id     : +cup.cupID,
                 event_id   : +cup.eventID,
                 player_id  : +cup.playerID,

@@ -13,6 +13,18 @@ const PRIZE_SELECTOR         = '.rank-icon-prize';
 
 export default getPlayerHistory;
 
+/**
+ * @function
+ * @name getPlayerHistory
+ * @description
+ * Возвращает массив историй игр в командах для игрока.
+ *
+ * @param {object} $ DOM объект страници с информацией о игроке.
+ * @param {object} element DOM элемент в котором мы ищем информацию.
+ * @param {object[]} teams Массив команд.
+ * @param {string} game Игра в которую игрок играет.
+ * @return {object[]} Массив историй игр в командах.
+ **/
 function getPlayerHistory($, element, teams, game) {
     let   result = [];
     const rows   = element.find(ROWS_SELECTOR);
@@ -28,6 +40,7 @@ function getPlayerHistory($, element, teams, game) {
                 const teamID = getTeamID(teams, team, game);
                 const cups   = getCups($, $(this).find(CUPS_SELECTOR));
 
+                //Если объект даты существует и данные валидны добавляем историю.
                 if (date && allFilled({
                         teamID,
                         dateIn  : date.dateIn,
@@ -48,6 +61,16 @@ function getPlayerHistory($, element, teams, game) {
     return result;
 }
 
+/**
+ * @function
+ * @name getCups
+ * @description
+ * Возвращает массив выгранных турниров игроком за команду.
+ *
+ * @param {object} $ DOM объект страници с информацией о игроке.
+ * @param {object} element DOM элемент в котором мы ищем информацию.
+ * @return {object[]} Массив выгранных турниров игроком за команду.
+ **/
 function getCups($, element) {
     let result = [];
     const cups = element.find(PRIZE_SELECTOR);
@@ -70,15 +93,32 @@ function getCups($, element) {
     return result;
 }
 
+/**
+ * @function
+ * @name getPlace
+ * @description
+ * Возвращает строку с названием кубка.
+ *
+ * @param {string} str Строка содержащая название кубка.
+ * @return {string} Строка с названием кубка.
+ **/
 function getPlace(str) {
     const places = ['Золото', 'Серебро', 'Бронза'];
-    const result = places.find(function (item) {
+
+    return places.find(function (item) {
         return str.indexOf(item) > -1;
     });
-
-    return result;
 }
 
+/**
+ * @function
+ * @name getLogoForCup
+ * @description
+ * Возвращает строку с путем к нужному изображению кубка.
+ *
+ * @param {string} str Строка содержащая название кубка.
+ * @return {string} Строка с путем к нужному изображению кубка.
+ **/
 function getLogoForCup(str) {
     const logoMap = {
       'Золото'  : './public/img/ico-cup-gold.png',
@@ -89,6 +129,15 @@ function getLogoForCup(str) {
     return logoMap[str];
 }
 
+/**
+ * @function
+ * @name getTeamName
+ * @description
+ * Возвращает строку с названием команды взятую из переданного элемента.
+ *
+ * @param {object} element Эдемент DOM в котором ищем название команды.
+ * @return {string} Строка с названием команды.
+ **/
 function getTeamName(element) {
     let name = '';
 
@@ -102,14 +151,24 @@ function getTeamName(element) {
     return name.trim();
 }
 
+/**
+ * @function
+ * @name getDate
+ * @description
+ * Возвращает объект содержащий дату входа в команду и дату выхода.
+ *
+ * @param {string} str Строка содержащая даты.
+ * @return {object} Объект содержащий дату входа в команду и дату выхода.
+ **/
 function getDate(str) {
     if (!str) {
         return '';
     }
 
-    let result = {};
-    let date   = str.split('-');
+    let result    = {};
+    let date      = str.split('-');
     let dateInArr = date[0].trim().split('.');
+    //Приводим дату в формату удобному для преобразования в объект даты(MM:DD:YY)
     let dateIn    = `${dateInArr[1]}.${dateInArr[0]}.${dateInArr[2]}`;
     let dateOut;
 
@@ -127,6 +186,15 @@ function getDate(str) {
     return result;
 }
 
+/**
+ * @function
+ * @name getNumbers
+ * @description
+ * Возвращает строку содержащую только число, остальные символы удаляет.
+ *
+ * @param {string} str Строка содержащая число.
+ * @return {string} Строка содержая только число.
+ **/
 function getNumbers(str) {
     if (!str) {
         return '';
@@ -135,6 +203,21 @@ function getNumbers(str) {
     return str.split('%')[1].replace(/[\(\)]/g, '').trim();
 }
 
+/**
+ * @function
+ * @name getPayer
+ * @description
+ * Возвращает объект истории игрока с переданными данными в виде аргументов.
+ *
+ * @param {number} teamID Id команды в которой играл игрок.
+ * @param {string} dateIn Дата прихода в команду.
+ * @param {string} dateOut Дата ухода из команды.
+ * @param {string} wins Количество побед.
+ * @param {string} ties Количество ничьих.
+ * @param {string} loses Количество поражений.
+ * @param {object[]} cups Кубки выгранные в команде.
+ * @return {object} Объект содержащий данные.
+ **/
 function getHistoryObj(teamID, dateIn, dateOut, wins, ties, loses, cups) {
     return {
         teamID,
@@ -147,6 +230,16 @@ function getHistoryObj(teamID, dateIn, dateOut, wins, ties, loses, cups) {
     };
 }
 
+/**
+ * @function
+ * @name allFilled
+ * @description
+ * Конфигирирует объект для проверки данных и проводит валидацию.
+ * Возращает логическое значение валидны данные или нет.
+ *
+ * @param {object} data Объект с данными для проверки.
+ * @return {boolean} Валидны данные или нет.
+ **/
 function allFilled(data) {
     const config = {
         teamID  : 'isNumber',

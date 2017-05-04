@@ -11,10 +11,10 @@ export default saveTeams;
  * @param {object} tables Объект с объектами таблиц.
  * @param {object[]} teams Массив объектов с информацией о командах.
  **/
-function saveTeams(tables, teams) {
-    teams.forEach(function (team) {
+async function saveTeams(tables, teams) {
+    teams.forEach(async function (team) {
         try {
-            model.save(tables.team, {
+            await model.save(tables.team, {
                 team_id   : +team.id,
                 rating    : +team.rating,
                 rating_gb : +team.gbRating,

@@ -17,58 +17,78 @@ const MATCH_GAME_SELECTOR        = '.b-match-list-item__icon span';
 
 export default getMatchesFeatureInformation;
 
+/**
+ * @function
+ * @name getMatchesFeatureInformation
+ * @description
+ * Возвращает массив матчей которые будут в будущем.
+ *
+ * @param {string} url URL страници с матчами.
+ * @param {object[]} teams Массив команд.
+ * @param {object[]} events Массив турниров.
+ * @return {object[]} Объект содержащий данные о будущих матчах.
+ **/
 async function getMatchesFeatureInformation(url, teams, events) {
-    try {
-        let matches = [];
-        let id      = 1;
+    let matches = [];
+    let id      = 1;
 
-        for (let i = 1; ; i++) {
-            const $    = await getLoadedPage(url + i);
-            const rows = $(MATCH_ROWS_SELECTOR);
+    for (let i = 1; ; i++) {
+        const $    = await getLoadedPage(url + i);
+        const rows = $(MATCH_ROWS_SELECTOR);
 
-            rows.each(function (index) {
-                try {
-                    if (index !== 0) {
-                        const game = getGameFromList($(this).find(MATCH_GAME_SELECTOR).attr('class'));
-                        const dateTime = getDateTime($(this).find(MATCH_DATE_TIME_SELECTOR).attr('datetime'),
-                            $(this).find(MATCH_DATE_TIME_SELECTOR).attr('title'));
-                        const firstTeam = getTrimString($(this).find(MATCH_FIRST_TEAM_SELECTOR).text());
-                        const secondTeam = getTrimString($(this).find(MATCH_SECOND_TEAM_SELECTOR).text());
-                        const event = $(this).find(MATCH_EVENT_SELECTOR).text();
+        rows.each(function (index) {
+            try {
+                if (index !== 0) {
+                    const game = getGameFromList($(this).find(MATCH_GAME_SELECTOR).attr('class'));
+                    const dateTime = getDateTime($(this).find(MATCH_DATE_TIME_SELECTOR).attr('datetime'),
+                                                 $(this).find(MATCH_DATE_TIME_SELECTOR).attr('title'));
+                    const firstTeam = getTrimString($(this).find(MATCH_FIRST_TEAM_SELECTOR).text());
+                    const secondTeam = getTrimString($(this).find(MATCH_SECOND_TEAM_SELECTOR).text());
+                    const event = $(this).find(MATCH_EVENT_SELECTOR).text();
 
-                        if (game !== '' && allFilled({
-                                date: dateTime.date,
-                                time: dateTime.time,
-                                firstTeam,
-                                secondTeam,
-                                event
-                            })) {
-                            const firstTeamID = getTeamID(teams, firstTeam, game);
-                            const secondTeamID = getTeamID(teams, secondTeam, game);
-                            const eventID = getEventID(events, event);
+                    if (game !== '' && allFilled({
+                            date: dateTime.date,
+                            time: dateTime.time,
+                            firstTeam,
+                            secondTeam,
+                            event
+                        })) {
+                        const firstTeamID = getTeamID(teams, firstTeam, game);
+                        const secondTeamID = getTeamID(teams, secondTeam, game);
+                        const eventID = getEventID(events, event);
 
-                            matches.push(getMatch(id, dateTime.time, dateTime.date, firstTeamID, secondTeamID, eventID));
-                            id++;
-                        }
+                        matches.push(getMatch(id, dateTime.time, dateTime.date, firstTeamID, secondTeamID, eventID));
+                        id++;
                     }
                 }
-                catch (err) {
-                    console.log(err);
-                }
-            });
-
-            if (!isNextPageExist($)) {
-                break;
             }
-        }
+            catch (err) {
+                console.log(err);
+            }
+        });
 
-        return matches;
+        if (!isNextPageExist($)) {
+            break;
+        }
     }
-    catch (err) {
-        console.log(err);
-    }
+
+    return matches;
 }
 
+/**
+ * @function
+ * @name getMatch
+ * @description
+ * Возвращает объект матча с переданными данными в виде аргументов.
+ *
+ * @param {number} id Id матча.
+ * @param {string} time Время проведения матча.
+ * @param {string} date Дата проведения матча.
+ * @param {number} firstTeamID Id первой команды.
+ * @param {number} secondTeamID Id второй команды.
+ * @param {number} eventID Id турнира в котором проводится игра.
+ * @return {object} Объект содержащий данные.
+ **/
 function getMatch(id, time, date, firstTeamID, secondTeamID, eventID) {
     return {
         id,
@@ -80,6 +100,16 @@ function getMatch(id, time, date, firstTeamID, secondTeamID, eventID) {
     };
 }
 
+/**
+ * @function
+ * @name allFilled
+ * @description
+ * Конфигирирует объект для проверки данных и проводит валидацию.
+ * Возращает логическое значение валидны данные или нет.
+ *
+ * @param {object} data Объект с данными для проверки.
+ * @return {boolean} Валидны данные или нет.
+ **/
 function allFilled(data) {
     const config = {
         date       : 'isNonEmpty',
@@ -92,6 +122,16 @@ function allFilled(data) {
     return isValid(data, config);
 }
 
+/**
+ * @function
+ * @name getDateTime
+ * @description
+ * Возвращает объект с датой и временем проведения матча.
+ *
+ * @param {string} date Строка содержащая дату.
+ * @param {string} time Строка содержащая время.
+ * @return {object} Объект содержащий дату и время.
+ **/
 function getDateTime(date, time) {
     let result = {};
 

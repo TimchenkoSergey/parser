@@ -18,6 +18,17 @@ const MATCH_GAME_SELECTOR        = '.b-match-list-item__icon span';
 
 export default getMatchesPastInformation;
 
+/**
+ * @function
+ * @name getMatchesPastInformation
+ * @description
+ * Возвращает массив матчей которые уже сыграны.
+ *
+ * @param {string} url URL страници с матчами.
+ * @param {object[]} teams Массив команд.
+ * @param {object[]} events Массив турниров.
+ * @return {object[]} Объект содержащий данные о сыграных матчах.
+ **/
 async function getMatchesPastInformation(url, teams, events) {
     let matches = [];
     let id      = 1;
@@ -31,7 +42,7 @@ async function getMatchesPastInformation(url, teams, events) {
                 if (index !== 0) {
                     const game = getGameFromList($(this).find(MATCH_GAME_SELECTOR).attr('class'));
                     const dateTime = getDateTime($(this).find(MATCH_DATE_TIME_SELECTOR).attr('datetime'),
-                        $(this).find(MATCH_DATE_TIME_SELECTOR).attr('title'));
+                                                 $(this).find(MATCH_DATE_TIME_SELECTOR).attr('title'));
                     const result = getResult($(this).find(MATCH_RESULT_SELECTOR).text());
                     const firstTeam = getTrimString($(this).find(MATCH_FIRST_TEAM_SELECTOR).text());
                     const secondTeam = getTrimString($(this).find(MATCH_SECOND_TEAM_SELECTOR).text());
@@ -77,6 +88,22 @@ async function getMatchesPastInformation(url, teams, events) {
     return matches;
 }
 
+/**
+ * @function
+ * @name getMatch
+ * @description
+ * Возвращает объект матча с переданными данными в виде аргументов.
+ *
+ * @param {number} id Id матча.
+ * @param {string} time Время проведения матча.
+ * @param {string} date Дата проведения матча.
+ * @param {number} firstTeamID Id первой команды.
+ * @param {number} secondTeamID Id второй команды.
+ * @param {number} eventID Id турнира в котором проводится игра.
+ * @param {string} resultFirst Результат игры первой команды.
+ * @param {string} resultSecond Результат игры второй команды.
+ * @return {object} resultSecond содержащий данные.
+ **/
 function getMatch(id, time, date, firstTeamID, secondTeamID, eventID, resultFirst, resultSecond) {
     return {
         id,
@@ -90,6 +117,16 @@ function getMatch(id, time, date, firstTeamID, secondTeamID, eventID, resultFirs
     };
 }
 
+/**
+ * @function
+ * @name allFilled
+ * @description
+ * Конфигирирует объект для проверки данных и проводит валидацию.
+ * Возращает логическое значение валидны данные или нет.
+ *
+ * @param {object} data Объект с данными для проверки.
+ * @return {boolean} Валидны данные или нет.
+ **/
 function allFilled(data) {
     const config = {
         date         : 'isNonEmpty',
@@ -104,6 +141,15 @@ function allFilled(data) {
     return isValid(data, config);
 }
 
+/**
+ * @function
+ * @name getResult
+ * @description
+ * Возвращает объект с информацией о результате матча.
+ *
+ * @param {string} str Строка содержащая рузультат.
+ * @return {object} Объект содержащий результат первой и второй команд.
+ **/
 function getResult(str) {
     let result = {};
 
@@ -119,6 +165,16 @@ function getResult(str) {
     return result;
 }
 
+/**
+ * @function
+ * @name getDateTime
+ * @description
+ * Возвращает объект с датой и временем проведения матча.
+ *
+ * @param {string} date Строка содержащая дату.
+ * @param {string} time Строка содержащая время.
+ * @return {object} Объект содержащий дату и время.
+ **/
 function getDateTime(date, time) {
     let result = {};
 

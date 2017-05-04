@@ -1,9 +1,9 @@
 import getUrlsList     from './getUrlsList';
 import downloadImage   from '../../libs/downloadImage';
-import config          from '../../config';
 import getGameFromList from '../../libs/getGameFromList';
 import isValid         from './isValid';
 import getLoadedPage   from './getLoadedPage';
+import getTrimString   from '../../libs/getTrimString';
 
 const CUP_LINK_SELECTOR    = '.main-wrap .main #tournaments-list tr td a';
 const CUP_LIST_SELECTOR    = 'table';
@@ -17,6 +17,15 @@ const CUP_FORM_ID_SELECTOR = 'form#jsonFilterTM';
 
 export default getCupsInformation;
 
+/**
+ * @function
+ * @name getCupsInformation
+ * @description
+ * Возвращает массив турниров.
+ *
+ * @param {string} url URL страници с турнирами.
+ * @return {object[]} Массив турниров.
+ **/
 async function getCupsInformation(url) {
     const links  = await getUrlsList(url, CUP_LINK_SELECTOR);
     let   result = [];
@@ -25,6 +34,9 @@ async function getCupsInformation(url) {
         try {
             const $ = await getLoadedPage(links[i].link);
             const imgPath = await downloadImage($(CUP_LOGO_SELECTOR).attr('src'));
+            //Т.к. список турниров подгружается на страницу по AJAX
+            //Мы ищем на страницу id турнира, и после этого отправляем
+            //запрос для получения списка турниров.
             const tournamentID = getTournamentID($(CUP_FORM_ID_SELECTOR).attr('action'));
             const ajaxUrl = getAJAXUrl(tournamentID);
             const $$ = await getLoadedPage(ajaxUrl);
@@ -48,6 +60,15 @@ async function getCupsInformation(url) {
     return result;
 }
 
+/**
+ * @function
+ * @name getAJAXUrl
+ * @description
+ * Возвращает путь для загрузки списка турниров по AJAX..
+ *
+ * @param {string} id Id турнира для отправки AJAX.
+ * @return {string} Путь для загрузки списка турниров по AJAX.
+ **/
 function getAJAXUrl(id) {
     const firstPath  = '/AJAX/cached2/reports_list.php?tournament_id=';
     const secondPath = '&first_load=Y&active=N&game=&active_elems=active&sort_field=0&sort_order=0&TM_NAME=';
@@ -55,17 +76,36 @@ function getAJAXUrl(id) {
     return firstPath + id + secondPath;
 }
 
+/**
+ * @function
+ * @name getTournamentID
+ * @description
+ * Возвращает id взятый со страници из строки экшена формы.
+ *
+ * @param {string} str Строка экшена формы.
+ * @return {string} Id турнира.
+ **/
 function getTournamentID(str) {
     return str.slice(str.lastIndexOf('=') + 1);
 }
 
+/**
+ * @function
+ * @name getCupsList
+ * @description
+ * Возвращает массив турниров проводимых под одним названием.
+ *
+ * @param {object} $ DOM объект страници.
+ * @param {object} list Элемент со списком турниров.
+ * @return {object[]} Массив турниров проводимых под одним названием.
+ **/
 function getCupsList($, list) {
     const rows = list.find(CUP_ROWS_SELECTOR);
     let result = [];
 
     rows.each(function (i) {
         if (i !== 0) {
-            const name      = getName($(this).find(CUP_NAME_SELECTOR).text());
+            const name      = getTrimString($(this).find(CUP_NAME_SELECTOR).text());
             const date      = getDate($(this).find(CUP_DATE_SELECTOR).text());
             const found     = $(this).find(CUP_FOUND_SELECTOR).text();
             const gameClass = $(this).find(CUP_GAME_SELECTOR).attr('class');
@@ -80,6 +120,18 @@ function getCupsList($, list) {
     return result;
 }
 
+/**
+ * @function
+ * @name getCup
+ * @description
+ * Возвращает объект турнира с переданными данными в виде аргументов.
+ *
+ * @param {string} name Название турнира.
+ * @param {string} date Дата проведения турнира.
+ * @param {string} found Призовой фонд турнира.
+ * @param {string} game Игра по которой проводится турнир.
+ * @return {object} Объект содержащий данные.
+ **/
 function getCup(name, date, found, game) {
     return {
         name,
@@ -89,27 +141,37 @@ function getCup(name, date, found, game) {
     };
 }
 
-function getName(str) {
-    if (!str) {
-        return '';
-    }
-
-    return str.trim();
-}
-
+/**
+ * @function
+ * @name getDate
+ * @description
+ * Возвращает строку содержащая дату в нужном для преобразования в объект формате.
+ *
+ * @param {string} str Строка содержащая дату.
+ * @return {string} Строка содержащая дату в нужном для преобразования в объект формате.
+ **/
 function getDate(str) {
     if (!str) {
         return '';
     }
 
-    const strArr     = str.trim().split(' ');
-    const date       = strArr[1];
-    const dataAtt    = date.split('.');
-    const resultDate = `${dataAtt[1]}.${dataAtt[0]}.${dataAtt[2]}`;
+    const strArr  = str.trim().split(' ');
+    const date    = strArr[1];
+    const dataAtt = date.split('.');
     
-    return resultDate;
+    return `${dataAtt[1]}.${dataAtt[0]}.${dataAtt[2]}`;
 }
 
+/**
+ * @function
+ * @name allFilled
+ * @description
+ * Конфигирирует объект для проверки данных и проводит валидацию.
+ * Возращает логическое значение валидны данные или нет.
+ *
+ * @param {object} data Объект с данными для проверки.
+ * @return {boolean} Валидны данные или нет.
+ **/
 function allFilled(data) {
     const config = {
         name  : 'isNonEmpty',

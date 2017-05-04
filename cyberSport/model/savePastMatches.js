@@ -11,10 +11,10 @@ export default savePastMatches;
  * @param {object} tables Объект с объектами таблиц.
  * @param {object[]} matches Массив объектов с информацией о прошедщих матчах.
  **/
-function savePastMatches(tables, matches) {
-    matches.forEach(function (match) {
+async function savePastMatches(tables, matches) {
+    matches.forEach(async function (match) {
         try {
-            model.save(tables.matchesPast, {
+            await model.save(tables.matchesPast, {
                 competition_past_id : +match.id,
                 event_id            : +match.eventID,
                 first_team_id       : +match.firstTeamID,

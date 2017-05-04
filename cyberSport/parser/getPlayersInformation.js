@@ -17,6 +17,17 @@ const PLAYERS_HISTORY_SELECTOR  = '.main .table__involv-in-team';
 
 export default getPlayersInformation;
 
+/**
+ * @function
+ * @name getPlayersInformation
+ * @description
+ * Возвращает массив объектов содержащих информацию о игроках.
+ *
+ * @param {string} url URL куда нужно отправить запрос.
+ * @param {object[]} teams Массив команд.
+ * @param {object[]} events Массив турниров.
+ * @return {object[]} Массив объектов содержащих информацию о игроках.
+ **/
 async function getPlayersInformation(url, teams, events) {
     const links  = await getUrlsList(url, PLAYERS_LINK_SELECTOR);
     let   result = [];
@@ -33,6 +44,7 @@ async function getPlayersInformation(url, teams, events) {
             const game      = getGameFromList($(PLAYERS_GAME_SELECTOR).attr('class'));
             const history   = getPlayerHistory($, $(PLAYERS_HISTORY_SELECTOR), teams, game);
 
+            //Если игра игрока это одна из интресующих нас и данные валидны добавляем игрока.
             if (game !== '' && allFilled({ id, nick, imgPath, country, game, rating })) {
                 result.push(getPayer(id, nick, imgPath, country, game, rating, history));
                 id++;
@@ -47,6 +59,15 @@ async function getPlayersInformation(url, teams, events) {
     return result;
 }
 
+/**
+ * @function
+ * @name setID
+ * @description
+ * Проставляет значения полей Id для историй игроков в командах и для выграных кубков.
+ *
+ * @param {object[]} result Массив игроков.
+ * @param {object[]} events Массив турниров.
+ **/
 function setID(result, events) {
     let historyID = 1;
     let cupID     = 1;
@@ -76,6 +97,21 @@ function setID(result, events) {
     });
 }
 
+/**
+ * @function
+ * @name getPayer
+ * @description
+ * Возвращает объект игрока с переданными данными в виде аргументов.
+ *
+ * @param {number} id Id игрока.
+ * @param {string} nick Ник игрока.
+ * @param {string} photo Путь к фото игрока.
+ * @param {number} rating Рэйтинг игрока.
+ * @param {string} game Игра в которую игрок играет.
+ * @param {string} country Страна игрока.
+ * @param {object[]} history История игр в командах игрока.
+ * @return {object} Объект содержащий данные.
+ **/
 function getPayer(id, nick, photo, country, game, rating, history) {
     return {
         id,
@@ -89,6 +125,16 @@ function getPayer(id, nick, photo, country, game, rating, history) {
     };
 }
 
+/**
+ * @function
+ * @name allFilled
+ * @description
+ * Конфигирирует объект для проверки данных и проводит валидацию.
+ * Возращает логическое значение валидны данные или нет.
+ *
+ * @param {object} data Объект с данными для проверки.
+ * @return {boolean} Валидны данные или нет.
+ **/
 function allFilled(data) {
     const config = {
         id      : 'isNumber',

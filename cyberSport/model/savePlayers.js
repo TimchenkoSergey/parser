@@ -12,10 +12,10 @@ export default savePlayers;
  * @param {object} tables Объект с объектами таблиц.
  * @param {object[]} histories Массив объектов с информацией о игроках.
  **/
-function savePlayers(tables, players) {
-    players.forEach(function (player) {
+async function savePlayers(tables, players) {
+    players.forEach(async function (player) {
         try {
-            model.save(tables.player, {
+            await model.save(tables.player, {
                 player_id : +player.id,
                 rating    : +player.rating,
                 rating_gb : +player.gbRating,
@@ -26,7 +26,7 @@ function savePlayers(tables, players) {
             });
     
             if (player.history && player.history.length > 0) {
-                savePlayerHistory(tables, player.history);
+                await savePlayerHistory(tables, player.history);
             }
         }
         catch (err) {

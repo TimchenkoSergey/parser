@@ -13,6 +13,15 @@ const TEAM_GAME_SELECTOR   = '.main .b-profile .rating .rating__game span';
 
 export default getTeamsInformation;
 
+/**
+ * @function
+ * @name getTeamsInformation
+ * @description
+ * Возвращает массив объектов содержащих информацию о командах.
+ *
+ * @param {string} url URL куда нужно отправить запрос.
+ * @return {object[]} Массив объектов содержащих информацию о командах.
+ **/
 async function getTeamsInformation(url) {
     const links  = await getUrlsList(url, TEAM_LINK_SELECTOR);
     let   result = [];
@@ -26,7 +35,8 @@ async function getTeamsInformation(url) {
             const rating    = getTrimString($(TEAM_RATING_SELECTOR).text());
             const imgPath   = await downloadImage(logoPath);
             const game      = getGameFromList($(TEAM_GAME_SELECTOR).attr('class'));
-
+            
+            //Если игра команды это одна из интресующих нас и данные валидны добавляем команду.
             if (game !== '' && allFilled({ id, name, imgPath, rating, game })) {
                 result.push(getTeam(id, name, imgPath, rating, game));
                 id++;
@@ -40,6 +50,19 @@ async function getTeamsInformation(url) {
     return result;
 }
 
+/**
+ * @function
+ * @name getTeam
+ * @description
+ * Возвращает объект команды с переданными данными в виде аргументов.
+ *
+ * @param {number} id Id команды.
+ * @param {string} name Название команды.
+ * @param {string} logo Путь к логотипу команды.
+ * @param {string} rating Рэйтинг команды.
+ * @param {string} game Игра в которую команда играет.
+ * @return {object} Объект содержащий данные.
+ **/
 function getTeam(id, name, logo, rating, game) {
     return {
         id,
@@ -51,6 +74,16 @@ function getTeam(id, name, logo, rating, game) {
     };
 }
 
+/**
+ * @function
+ * @name allFilled
+ * @description
+ * Конфигирирует объект для проверки данных и проводит валидацию.
+ * Возращает логическое значение валидны данные или нет.
+ *
+ * @param {object} data Объект с данными для проверки.
+ * @return {boolean} Валидны данные или нет.
+ **/
 function allFilled(data) {
     const config = {
         id      : 'isNumber',
