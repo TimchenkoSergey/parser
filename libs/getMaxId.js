@@ -6,14 +6,18 @@ export default getMaxId;
  * @description
  * Возращает максимальный id из массива обьектов.
  *
- * @param {object[]} arr Объект с объектами таблиц.
- * @param {string} idPropName Объект только распаршеной команды.
+ * @param {object[]} arr Массив объектов.
+ * @param {string} idPropName Название свойства где хранится id.
  * @return {number} Максимальное значения поля id в таблице.
  **/
 function getMaxId(arr, idPropName) {
     const ids = arr.map(function (item) {
         return item[idPropName];
     });
-
-    return Math.max(...ids);
+    
+    if (ids && ids.length > 0) {
+        return Math.max(...ids);
+    }
+   
+    return 0;
 }

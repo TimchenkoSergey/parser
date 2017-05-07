@@ -4,6 +4,15 @@ import getMaxId   from '../../libs/getMaxId';
 
 export default updateEvents;
 
+/**
+ * @function
+ * @name updateEvents
+ * @description
+ * Обновляет данные о турнирах.
+ *
+ * @param {object} tables Объект с объектами таблиц.
+ * @param {object[]} events Массив объектов с информацией о турнирах.
+ **/
 async function updateEvents(tables, events) {
     const eventsInDb = await model.findAll(tables.event, {});
     let   id         = getMaxId(eventsInDb, 'event_id');

@@ -4,7 +4,8 @@ import config    from '../config';
 const sequelize = new Sequelize(
                                 config.get('db:name'),
                                 config.get('db:userName'),
-                                config.get('db:password')
+                                config.get('db:password'),
+                                { logging : false }
 );
 
 export default dbInit;

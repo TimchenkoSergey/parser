@@ -1,7 +1,10 @@
-import getTables          from './tables';
-import dbInit             from './dbInit';
-import updateTeams        from '../cyberSport/model/updateTeams';
-import updateEvents       from '../cyberSport/model/updateEvents';
+import getTables           from './tables';
+import dbInit              from './dbInit';
+import updateTeams         from '../cyberSport/model/updateTeams';
+import updateEvents        from '../cyberSport/model/updateEvents';
+import updatePastMatches   from '../cyberSport/model/updatePastMatches';
+import updateFutureMatches from '../cyberSport/model/updateFutureMatches';
+import updatePlayers       from '../cyberSport/model/updatePlayers';
 
 export default updateDb;
 
@@ -27,4 +30,7 @@ async function updateDb(teams, events, players, pastMatches, featureMatches) {
 
     await updateTeams(models, teams);
     await updateEvents(models, events);
+    await updatePlayers(models, players, teams, events);
+    await updatePastMatches(models, pastMatches);
+    await updateFutureMatches(models, featureMatches);
 }

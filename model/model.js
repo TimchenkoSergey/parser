@@ -35,7 +35,7 @@ function save(table, options) {
  * а при успешном выполнении массив объектов с данными кортежей.
  **/
 function findAll(table, options) {
-    return table.findAll(options);
+    return table.findAll({ where : options });
 }
 
 /**
@@ -50,7 +50,7 @@ function findAll(table, options) {
  * а при успешном выполнении объект с данными кортежа.
  **/
 function findOne(table, options) {
-    return table.findOne(options);
+    return table.findOne({ where : options });
 }
 
 /**
@@ -81,5 +81,5 @@ function update(table, options, newData) {
  * а при успешном выполнении 1 или 0.
  **/
 function destroy(table, options) {
-    table.destroy({ where: options });
+    return table.destroy({ where: options });
 }

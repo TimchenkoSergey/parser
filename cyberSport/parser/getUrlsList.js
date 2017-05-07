@@ -18,7 +18,7 @@ export default getUrlsList;
 async function getUrlsList(url, selector) {
     let result = [];
 
-    for (let i = 1; i < 2; i++) {
+    for (let i = 1; ; i++) {
         const urlPage = url + i;
         const urls    = await getUrlsForPage(urlPage, selector);
 
