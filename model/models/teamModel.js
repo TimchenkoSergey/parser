@@ -18,7 +18,7 @@ async function getTeamModel(sequelize, Sequelize) {
         },
         name      : Sequelize.TEXT,
         logo      : Sequelize.TEXT,
-        game      : Sequelize.TEXT,
+        game_id   : Sequelize.INTEGER,
         rating    : Sequelize.FLOAT,
         rating_gb : Sequelize.FLOAT
     });

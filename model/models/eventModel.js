@@ -16,12 +16,12 @@ async function getEventModel(sequelize, Sequelize) {
             type       : Sequelize.INTEGER,
             primaryKey : true
         },
-        name  : Sequelize.TEXT,
-        date  : Sequelize.DATE,
+        name    : Sequelize.TEXT,
+        date    : Sequelize.DATE,
         //Призовой фонд турнира.
-        found : Sequelize.TEXT,
-        game  : Sequelize.TEXT,
-        logo  : Sequelize.TEXT
+        found   : Sequelize.TEXT,
+        game_id : Sequelize.INTEGER,
+        logo    : Sequelize.TEXT
     });
 
     await event.sync();

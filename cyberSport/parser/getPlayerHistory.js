@@ -22,10 +22,10 @@ export default getPlayerHistory;
  * @param {object} $ DOM объект страници с информацией о игроке.
  * @param {object} element DOM элемент в котором мы ищем информацию.
  * @param {object[]} teams Массив команд.
- * @param {string} game Игра в которую игрок играет.
+ * @param {number} gameId Игра в которую игрок играет.
  * @return {object[]} Массив историй игр в командах.
  **/
-function getPlayerHistory($, element, teams, game) {
+function getPlayerHistory($, element, teams, gameId) {
     let   result = [];
     const rows   = element.find(ROWS_SELECTOR);
 
@@ -37,7 +37,7 @@ function getPlayerHistory($, element, teams, game) {
                 const wins   = getNumbers($(this).find(WIN_SELECTOR).text());
                 const ties   = getNumbers($(this).find(TIE_SELECTOR).text());
                 const loses  = getNumbers($(this).find(LOSE_SELECTOR).text());
-                const teamID = getTeamID(teams, team, game);
+                const teamID = getTeamID(teams, team, gameId);
                 const cups   = getCups($, $(this).find(CUPS_SELECTOR));
 
                 //Если объект даты существует и данные валидны добавляем историю.

@@ -27,10 +27,15 @@ async function start() {
     try {
         //Парсинг всех нужных данных
         const teams          = await getTeams(TEAMS_URL);
+        console.log('Teams');
         const events         = await getCups(EVENTS_URL);
+        console.log('events');
         const players        = await getPlayers(PLAYERS_URL, teams, events);
+        console.log('players');
         const pastMatches    = await getMatchesPast(MATCHES_PAST_URL, teams, events);
+        console.log('pastMatches');
         const featureMatches = await getMatchesFeature(MATCHES_FEATURE_URL, teams, events);
+        console.log('featureMatches');
         
         if (config.get('fillDB')) {
             await fillDb(

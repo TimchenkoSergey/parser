@@ -1,6 +1,6 @@
 import getUrlsList     from './getUrlsList';
 import downloadImage   from '../../libs/downloadImage';
-import getGameFromList from '../../libs/getGameFromList';
+import getGameId       from '../../libs/getGameId';
 import isValid         from './isValid';
 import getLoadedPage   from './getLoadedPage';
 import getTrimString   from '../../libs/getTrimString';
@@ -34,11 +34,11 @@ async function getTeamsInformation(url) {
             const logoPath  = $(TEAM_LOGO_SELECTOR).attr('src');
             const rating    = getTrimString($(TEAM_RATING_SELECTOR).text());
             const imgPath   = await downloadImage(logoPath);
-            const game      = getGameFromList($(TEAM_GAME_SELECTOR).attr('class'));
+            const gameId    = await getGameId($(TEAM_GAME_SELECTOR).attr('class'));
             
             //Если игра команды это одна из интресующих нас и данные валидны добавляем команду.
-            if (game !== '' && allFilled({ id, name, imgPath, rating, game })) {
-                result.push(getTeam(id, name, imgPath, rating, game));
+            if (gameId !== 0 && allFilled({ id, name, imgPath, rating, gameId })) {
+                result.push(getTeam(id, name, imgPath, rating, gameId));
                 id++;
             }
         }
@@ -60,16 +60,16 @@ async function getTeamsInformation(url) {
  * @param {string} name Название команды.
  * @param {string} logo Путь к логотипу команды.
  * @param {string} rating Рэйтинг команды.
- * @param {string} game Игра в которую команда играет.
+ * @param {number} gamId Игра в которую команда играет.
  * @return {object} Объект содержащий данные.
  **/
-function getTeam(id, name, logo, rating, game) {
+function getTeam(id, name, logo, rating, gameId) {
     return {
         id,
         name,
         logo,
         rating,
-        game,
+        gameId,
         gbRating : 0
     };
 }
@@ -90,7 +90,7 @@ function allFilled(data) {
         name    : 'isNonEmpty',
         imgPath : 'isNonEmpty',
         rating  : 'isNumber',
-        game    : 'isNonEmpty'
+        gameId  : 'isNumber'
     };
     
     return isValid(data, config);

@@ -1,5 +1,4 @@
-import getTables           from './tables';
-import dbInit              from './dbInit';
+import initial             from './initial';
 import updateTeams         from '../cyberSport/model/updateTeams';
 import updateEvents        from '../cyberSport/model/updateEvents';
 import updatePastMatches   from '../cyberSport/model/updatePastMatches';
@@ -21,12 +20,7 @@ export default updateDb;
  * @param {object[]} featureMatches Массив с данными для таблицы с информацией о будущих матчах.
  **/
 async function updateDb(teams, events, players, pastMatches, featureMatches) {
-    const {
-        Sequelize,
-        sequelize
-    } = await dbInit();
-    //Объект с объектами таблиц.
-    const models = await getTables(sequelize, Sequelize);
+    const models = await initial();
 
     await updateTeams(models, teams);
     await updateEvents(models, events);

@@ -12,7 +12,7 @@ export default saveTeams;
  * @param {object[]} teams Массив объектов с информацией о командах.
  **/
 async function saveTeams(tables, teams) {
-    teams.forEach(async function (team) {
+    teams.forEach(async function (team, i) {
         try {
             await model.save(tables.team, {
                 team_id   : +team.id,
@@ -20,7 +20,14 @@ async function saveTeams(tables, teams) {
                 rating_gb : +team.gbRating,
                 name      : team.name,
                 logo      : team.logo,
-                game      : team.game
+                game_id   : team.gameId
+            });
+
+            await model.save(tables.teamRatingHistory, {
+                rating_id : i + 1,
+                date      : new Date(),
+                rating    : +team.rating,
+                team_id   : +team.id
             });
         }
         catch (err) {

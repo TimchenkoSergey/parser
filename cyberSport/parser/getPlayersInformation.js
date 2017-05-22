@@ -1,6 +1,6 @@
 import getUrlsList      from './getUrlsList';
 import downloadImage    from '../../libs/downloadImage';
-import getGameFromList  from '../../libs/getGameFromList';
+import getGameId        from '../../libs/getGameId';
 import getPlayerHistory from './getPlayerHistory';
 import isValid          from './isValid';
 import getEventID       from './getEventID';
@@ -41,12 +41,12 @@ async function getPlayersInformation(url, teams, events) {
             const logoPath  = $(PLAYERS_LOGO_SELECTOR).attr('src');
             const imgPath   = await downloadImage(logoPath);
             const rating    = $(PLAYERS_RATING_SELECTOR).text();
-            const game      = getGameFromList($(PLAYERS_GAME_SELECTOR).attr('class'));
-            const history   = getPlayerHistory($, $(PLAYERS_HISTORY_SELECTOR), teams, game);
+            const gameId    = await getGameId($(PLAYERS_GAME_SELECTOR).attr('class'));
+            const history   = getPlayerHistory($, $(PLAYERS_HISTORY_SELECTOR), teams, gameId);
 
             //Если игра игрока это одна из интресующих нас и данные валидны добавляем игрока.
-            if (game !== '' && allFilled({ id, nick, imgPath, country, game, rating })) {
-                result.push(getPayer(id, nick, imgPath, country, game, rating, history));
+            if (gameId !== 0 && allFilled({ id, nick, imgPath, country, gameId, rating })) {
+                result.push(getPayer(id, nick, imgPath, country, gameId, rating, history));
                 id++;
             }
         }
@@ -107,18 +107,18 @@ function setID(result, events) {
  * @param {string} nick Ник игрока.
  * @param {string} photo Путь к фото игрока.
  * @param {number} rating Рэйтинг игрока.
- * @param {string} game Игра в которую игрок играет.
+ * @param {number} gameId Игра в которую игрок играет.
  * @param {string} country Страна игрока.
  * @param {object[]} history История игр в командах игрока.
  * @return {object} Объект содержащий данные.
  **/
-function getPayer(id, nick, photo, country, game, rating, history) {
+function getPayer(id, nick, photo, country, gameId, rating, history) {
     return {
         id,
         nick,
         photo,
         country,
-        game,
+        gameId,
         rating,
         history,
         gbRating : 0
@@ -142,7 +142,7 @@ function allFilled(data) {
         imgPath : 'isNonEmpty',
         country : 'isNonEmpty',
         rating  : 'isNumber',
-        game    : 'isNonEmpty'
+        gameId  : 'isNumber'
     };
 
     return isValid(data, config);

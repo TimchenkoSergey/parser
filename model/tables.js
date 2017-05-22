@@ -5,6 +5,11 @@ import getPlayerModel         from './models/playerModel';
 import getPlayerHistoryModel  from './models/playerHistoryModel';
 import getMatchesPastModel    from './models/matchesPastModel';
 import getMatchesFeatureModel from './models/matchesFeatureModel';
+import getGameModel           from './models/gameModel';
+import getTeamRatingHistory   from './models/teamRatingHistory';
+import getPlayerRatingHistory from './models/playerRatingHistory';
+import getBookmakerModel      from './models/bookmakerModel';
+import getBetModel            from './models/betModel';
 
 export default getTables;
 
@@ -19,14 +24,19 @@ export default getTables;
  * @return {object} Объект с объектами таблиц.
  **/
 async function getTables(sequelize, Sequelize) {
-    const team           = await getTeamModel(sequelize, Sequelize);
-    const cup            = await getCupModel(sequelize, Sequelize);
-    const player         = await getPlayerModel(sequelize, Sequelize);
-    const event          = await getEventModel(sequelize, Sequelize);
-    const playerHistory  = await getPlayerHistoryModel(sequelize, Sequelize);
-    const matchesPast    = await getMatchesPastModel(sequelize, Sequelize);
-    const matchesFeature = await getMatchesFeatureModel(sequelize, Sequelize);
-    
+    const team                = await getTeamModel(sequelize, Sequelize);
+    const cup                 = await getCupModel(sequelize, Sequelize);
+    const player              = await getPlayerModel(sequelize, Sequelize);
+    const event               = await getEventModel(sequelize, Sequelize);
+    const playerHistory       = await getPlayerHistoryModel(sequelize, Sequelize);
+    const matchesPast         = await getMatchesPastModel(sequelize, Sequelize);
+    const matchesFeature      = await getMatchesFeatureModel(sequelize, Sequelize);
+    const game                = await getGameModel(sequelize, Sequelize);
+    const teamRatingHistory   = await getTeamRatingHistory(sequelize, Sequelize);
+    const playerRatingHistory = await getPlayerRatingHistory(sequelize, Sequelize);
+    const bookmaker           = await getBookmakerModel(sequelize, Sequelize);
+    const bet                 = await getBetModel(sequelize, Sequelize);
+
     return {
         team,
         cup,
@@ -34,6 +44,11 @@ async function getTables(sequelize, Sequelize) {
         event,
         playerHistory,
         matchesPast,
-        matchesFeature
+        matchesFeature,
+        game,
+        teamRatingHistory,
+        playerRatingHistory,
+        bookmaker,
+        bet
     };
 }

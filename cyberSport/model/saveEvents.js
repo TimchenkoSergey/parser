@@ -19,7 +19,7 @@ async function saveEvents(tables, events) {
                 date     : new Date(event.date),
                 name     : event.name,
                 found    : event.found,
-                game     : event.game,
+                game_id  : event.gameId,
                 logo     : event.logo
             });
         }

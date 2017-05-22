@@ -1,5 +1,4 @@
-import getTables          from './tables';
-import dbInit             from './dbInit';
+import initial            from './initial';
 import saveTeams          from '../cyberSport/model/saveTeams';
 import saveEvents         from '../cyberSport/model/saveEvents';
 import savePlayers        from '../cyberSport/model/savePlayers';
@@ -21,13 +20,8 @@ export default fillDB;
  * @param {object[]} featureMatches Массив с данными для таблицы с информацией о будущих матчах.
  **/
 async function fillDB(teams, events, players, pastMatches, featureMatches) {
-    const {
-        Sequelize,
-        sequelize
-    } = await dbInit();
-    //Объект с объектами таблиц.
-    const models = await getTables(sequelize, Sequelize);
-    
+    const models = await initial();
+
     await saveTeams(models, teams);
     await saveEvents(models, events);
     await savePlayers(models, players);

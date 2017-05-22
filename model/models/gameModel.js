@@ -1,30 +1,25 @@
-export default getPlayerModel;
+export default getGameModel;
 
 /**
  * @function
- * @name getPlayerModel
+ * @name getGameModel
  * @description
- * Модель описывающая таблицу игрока.
+ * Модель описывающая таблицу игр с которыми мы работаем.
  *
  * @param {object} sequelize Экземпляр класса Sequelize позволяющий инициализировать и создать таблицу.
  * @param {object} Sequelize Sequelize класс представляющий типы данных.
  * @return {object} Объект созданой таблицы позволяющий работать с ней.
  **/
-async function getPlayerModel(sequelize, Sequelize) {
-    const player = sequelize.define('player', {
-        player_id : {
+async function getGameModel(sequelize, Sequelize) {
+    const game = sequelize.define('game', {
+        game_id : {
             type       : Sequelize.INTEGER,
             primaryKey : true
         },
-        nick      : Sequelize.TEXT,
-        photo     : Sequelize.TEXT,
-        country   : Sequelize.TEXT,
-        game_id   : Sequelize.INTEGER,
-        rating    : Sequelize.FLOAT,
-        rating_gb : Sequelize.FLOAT
+        game_name : Sequelize.TEXT
     });
 
-    await player.sync();
+    await game.sync();
 
-    return player;
+    return game;
 }

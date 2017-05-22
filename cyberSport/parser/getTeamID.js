@@ -9,12 +9,12 @@ export default getTeamID;
  *
  * @param {object[]} teams Массив команд.
  * @param {string} name Имя искомой команды.
- * @param {string} game Игра искомой команды.
+ * @param {number} gameId Игра искомой команды.
  * @return {number} Id искомой команды или 0 если ни одна не подошла.
  **/
-function getTeamID(teams, name, game) {
+function getTeamID(teams, name, gameId) {
     const result = teams.find(function (item) {
-        return item.name === name && item.game === game;
+        return item.name === name && item.gameId === gameId;
     });
 
     if (result) {

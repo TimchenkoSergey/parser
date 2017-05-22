@@ -1,6 +1,6 @@
 import getUrlsList     from './getUrlsList';
 import downloadImage   from '../../libs/downloadImage';
-import getGameFromList from '../../libs/getGameFromList';
+import getGameId       from '../../libs/getGameId';
 import isValid         from './isValid';
 import getLoadedPage   from './getLoadedPage';
 import getTrimString   from '../../libs/getTrimString';
@@ -40,7 +40,7 @@ async function getCupsInformation(url) {
             const tournamentID = getTournamentID($(CUP_FORM_ID_SELECTOR).attr('action'));
             const ajaxUrl = getAJAXUrl(tournamentID);
             const $$ = await getLoadedPage(ajaxUrl);
-            const cups = getCupsList($$, $$(CUP_LIST_SELECTOR));
+            const cups = await getCupsList($$, $$(CUP_LIST_SELECTOR));
 
             cups.forEach(function (item) {
                 item.logo = imgPath;
@@ -99,23 +99,23 @@ function getTournamentID(str) {
  * @param {object} list Элемент со списком турниров.
  * @return {object[]} Массив турниров проводимых под одним названием.
  **/
-function getCupsList($, list) {
+async function getCupsList($, list) {
     const rows = list.find(CUP_ROWS_SELECTOR);
     let result = [];
 
-    rows.each(function (i) {
+    for (let i = 0; i < rows.length; i++) {
         if (i !== 0) {
-            const name      = getTrimString($(this).find(CUP_NAME_SELECTOR).text());
-            const date      = getDate($(this).find(CUP_DATE_SELECTOR).text());
-            const found     = $(this).find(CUP_FOUND_SELECTOR).text();
-            const gameClass = $(this).find(CUP_GAME_SELECTOR).attr('class');
-            const game      =  getGameFromList(gameClass);
+            const name      = getTrimString($(rows[i]).find(CUP_NAME_SELECTOR).text());
+            const date      = getDate($(rows[i]).find(CUP_DATE_SELECTOR).text());
+            const found     = $(rows[i]).find(CUP_FOUND_SELECTOR).text();
+            const gameClass = $(rows[i]).find(CUP_GAME_SELECTOR).attr('class');
+            const gameId    = await getGameId(gameClass);
 
-            if (game !== '' && allFilled({ name, date, found })) {
-                result.push(getCup(name, date, found, game));
+            if (gameId !== 0 && allFilled({ name, date, found })) {
+                result.push(getCup(name, date, found, gameId));
             }
         }
-    });
+    }
 
     return result;
 }
@@ -129,15 +129,15 @@ function getCupsList($, list) {
  * @param {string} name Название турнира.
  * @param {string} date Дата проведения турнира.
  * @param {string} found Призовой фонд турнира.
- * @param {string} game Игра по которой проводится турнир.
+ * @param {number} gameId Игра по которой проводится турнир.
  * @return {object} Объект содержащий данные.
  **/
-function getCup(name, date, found, game) {
+function getCup(name, date, found, gameId) {
     return {
         name,
         date,
         found,
-        game
+        gameId
     };
 }
 

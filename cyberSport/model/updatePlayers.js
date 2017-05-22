@@ -22,15 +22,19 @@ let getIdForPlayerCup;
 async function updatePlayers(tables, players, teams, events) {
     const playersInDb = await model.findAll(tables.player, {});
     let   id          = getMaxId(playersInDb, 'player_id');
+    const historyInDb = await model.findAll(tables.playerRatingHistory, {});
+    let   historyId   = getMaxId(historyInDb, 'rating_id');
     getIdForPlayerCup = await getIdForCups(tables);
 
     players.forEach(async function (item) {
         const player = playersInDb.find(function (playerInDb) {
-            return item.nick === playerInDb.nick && item.game === playerInDb.game;
+            return item.nick === playerInDb.nick && item.gameId === playerInDb.game_id;
         });
 
         if (player) {
             await updateRating(tables.player, item, player);
+            historyId++;
+            await addNewRatingForHistory(tables.playerRatingHistory, item, player, historyId);
             await updatePlayerHistory(tables, item, player, teams, events);
         }
         else {
@@ -75,7 +79,7 @@ async function updatePlayerHistory(tables, player, playerInDb, teams, events) {
         const playerHistoriesInDb = await model.findAll(tables.playerHistory, { player_id : playerInDb.player_id });
         const allHistories        = await model.findAll(tables.playerHistory, {});
         let   id                  = getMaxId(allHistories, 'history_id');
-        
+
         player.history.forEach(async function (item) {
             const history = playerHistoriesInDb.find(function (playerHistoryInDb) {
                 return new Date(item.dateIn).valueOf() === playerHistoryInDb.date_in.valueOf();
@@ -118,7 +122,7 @@ async function getTeamId(teams, id, tables) {
     if (team) {
         const teamsInDb = await model.findAll(tables.team, {});
         const teamInDb = teamsInDb.find(function (item) {
-            return team.name === item.name && team.game === item.game;
+            return team.name === item.name && team.gameId === item.game_id;
         });
 
         if (teamInDb) {
@@ -211,7 +215,6 @@ async function updateCups(tables, history, playerInDb, historyInDb, events) {
             player_id  : playerInDb.player_id,
             history_id : historyInDb.history_id
         });
-
         if (history.cups.length !== cupsInDb.length) {
             history.cups.forEach(async function (item) {
                 let cup = false;
@@ -278,4 +281,24 @@ async function getEventId(events, id, tables) {
     }
 
     return 0;
+}
+
+/**
+ * @function
+ * @name addNewRatingForHistory
+ * @description
+ * Добавляет изменёный рейтинг игрока в таблицу с историей рейтинга игрока.
+ *
+ * @param {object} table Объект таблици.
+ * @param {object} player Объект только распаршенего игрока.
+ * @param {object} playerInDb Объект игрока из базы данных.
+ * @param {number} id Id для новой записи.
+ **/
+async function addNewRatingForHistory(table, player, playerInDb, id) {
+    await model.save(table, {
+        rating_id : id,
+        date      : new Date(),
+        rating    : +player.rating,
+        player_id  : playerInDb.player_id
+    });
 }

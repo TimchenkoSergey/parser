@@ -1,30 +1,25 @@
-export default getPlayerModel;
+export default getBookmakerModel;
 
 /**
  * @function
- * @name getPlayerModel
+ * @name getBookmakerModel
  * @description
- * Модель описывающая таблицу игрока.
+ * Модель описывающая таблицу букмекеров.
  *
  * @param {object} sequelize Экземпляр класса Sequelize позволяющий инициализировать и создать таблицу.
  * @param {object} Sequelize Sequelize класс представляющий типы данных.
  * @return {object} Объект созданой таблицы позволяющий работать с ней.
  **/
-async function getPlayerModel(sequelize, Sequelize) {
-    const player = sequelize.define('player', {
-        player_id : {
+async function getBookmakerModel(sequelize, Sequelize) {
+    const bookmaker = sequelize.define('bookmaker', {
+        bookmaker_id : {
             type       : Sequelize.INTEGER,
             primaryKey : true
         },
-        nick      : Sequelize.TEXT,
-        photo     : Sequelize.TEXT,
-        country   : Sequelize.TEXT,
-        game_id   : Sequelize.INTEGER,
-        rating    : Sequelize.FLOAT,
-        rating_gb : Sequelize.FLOAT
+        name : Sequelize.TEXT
     });
 
-    await player.sync();
+    await bookmaker.sync();
 
-    return player;
+    return bookmaker;
 }

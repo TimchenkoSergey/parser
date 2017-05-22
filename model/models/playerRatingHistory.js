@@ -1,30 +1,27 @@
-export default getPlayerModel;
+export default getPlayerRatingHistory;
 
 /**
  * @function
- * @name getPlayerModel
+ * @name getPlayerRatingHistory
  * @description
- * Модель описывающая таблицу игрока.
+ * Модель описывающая изминения рейтинга игрока.
  *
  * @param {object} sequelize Экземпляр класса Sequelize позволяющий инициализировать и создать таблицу.
  * @param {object} Sequelize Sequelize класс представляющий типы данных.
  * @return {object} Объект созданой таблицы позволяющий работать с ней.
  **/
-async function getPlayerModel(sequelize, Sequelize) {
-    const player = sequelize.define('player', {
-        player_id : {
+async function getPlayerRatingHistory(sequelize, Sequelize) {
+    const history = sequelize.define('player_rating_history', {
+        rating_id : {
             type       : Sequelize.INTEGER,
             primaryKey : true
         },
-        nick      : Sequelize.TEXT,
-        photo     : Sequelize.TEXT,
-        country   : Sequelize.TEXT,
-        game_id   : Sequelize.INTEGER,
-        rating    : Sequelize.FLOAT,
-        rating_gb : Sequelize.FLOAT
+        date      : Sequelize.DATE,
+        rating    : Sequelize.INTEGER,
+        player_id : Sequelize.INTEGER
     });
 
-    await player.sync();
+    await history.sync();
 
-    return player;
+    return history;
 }
