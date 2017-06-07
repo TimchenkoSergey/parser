@@ -2,7 +2,7 @@ import getUrlsList     from './getUrlsList';
 import downloadImage   from '../../libs/downloadImage';
 import getGameId       from '../../libs/getGameId';
 import isValid         from './isValid';
-import getLoadedPage   from './getLoadedPage';
+import getLoadedPage   from '../../libs/getLoadedPage';
 import getTrimString   from '../../libs/getTrimString';
 
 const TEAM_LINK_SELECTOR   = '.main td.team a';

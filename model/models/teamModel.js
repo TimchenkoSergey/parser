@@ -20,7 +20,10 @@ async function getTeamModel(sequelize, Sequelize) {
         logo      : Sequelize.TEXT,
         game_id   : Sequelize.INTEGER,
         rating    : Sequelize.FLOAT,
-        rating_gb : Sequelize.FLOAT
+        rating_gb : Sequelize.FLOAT,
+        math_expectation    : Sequelize.FLOAT,
+        probability_winning : Sequelize.FLOAT,
+        probability_losing  : Sequelize.FLOAT
     });
 
     await team.sync();

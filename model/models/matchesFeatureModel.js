@@ -20,7 +20,12 @@ async function getMatchesFeatureModel(sequelize, Sequelize) {
         date           : Sequelize.DATE,
         event_id       : Sequelize.INTEGER,
         first_team_id  : Sequelize.INTEGER,
-        second_team_id : Sequelize.INTEGER
+        second_team_id : Sequelize.INTEGER,
+        first_team_win_probability     : Sequelize.FLOAT,
+        second_team_win_probability    : Sequelize.FLOAT,
+        absolute_difference            : Sequelize.FLOAT,
+        first_equilibrium_coefficient  : Sequelize.FLOAT,
+        second_equilibrium_coefficient : Sequelize.FLOAT
     });
 
     await matchesPast.sync();

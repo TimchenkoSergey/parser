@@ -4,7 +4,7 @@ import getGameId        from '../../libs/getGameId';
 import getPlayerHistory from './getPlayerHistory';
 import isValid          from './isValid';
 import getEventID       from './getEventID';
-import getLoadedPage    from './getLoadedPage';
+import getLoadedPage    from '../../libs/getLoadedPage';
 import getTrimString    from '../../libs/getTrimString';
 
 const PLAYERS_LINK_SELECTOR     = '.item__nick';

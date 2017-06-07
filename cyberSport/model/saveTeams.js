@@ -20,7 +20,10 @@ async function saveTeams(tables, teams) {
                 rating_gb : +team.gbRating,
                 name      : team.name,
                 logo      : team.logo,
-                game_id   : team.gameId
+                game_id   : team.gameId,
+                math_expectation    : 0,
+                probability_winning : 0,
+                probability_losing  : 0
             });
 
             await model.save(tables.teamRatingHistory, {

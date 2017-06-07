@@ -4,7 +4,7 @@ import isNextPageExist from './isNextPageExist';
 import getTeamID       from './getTeamID';
 import getEventID      from './getEventID';
 import getTrimString   from '../../libs/getTrimString';
-import getLoadedPage   from './getLoadedPage';
+import getLoadedPage   from '../../libs/getLoadedPage';
 
 const MATCH_ROWS_SELECTOR        = '.main-wrap .main .b-match-list tr';
 const MATCH_DATE_TIME_SELECTOR   = '.b-match-list-item__date time';
@@ -32,7 +32,7 @@ async function getMatchesFeatureInformation(url, teams, events) {
     let matches = [];
     let id      = 1;
 
-    for (let i = 1; i < 2; i++) {
+    for (let i = 1; ; i++) {
         const $    = await getLoadedPage(url + i);
         const rows = $(MATCH_ROWS_SELECTOR);
 

@@ -4,6 +4,8 @@ import updateEvents        from '../cyberSport/model/updateEvents';
 import updatePastMatches   from '../cyberSport/model/updatePastMatches';
 import updateFutureMatches from '../cyberSport/model/updateFutureMatches';
 import updatePlayers       from '../cyberSport/model/updatePlayers';
+import updateGbRating      from '../cyberSport/model/updateGbRating';
+import updateCoefficients  from '../cyberSport/model/updateCoefficients';
 
 export default updateDb;
 
@@ -22,9 +24,11 @@ export default updateDb;
 async function updateDb(teams, events, players, pastMatches, featureMatches) {
     const models = await initial();
 
-    await updateTeams(models, teams);
+    /*await updateTeams(models, teams);
     await updateEvents(models, events);
     await updatePlayers(models, players, teams, events);
     await updatePastMatches(models, pastMatches);
     await updateFutureMatches(models, featureMatches);
+    await updateGbRating(models);*/
+    await updateCoefficients(models);
 }

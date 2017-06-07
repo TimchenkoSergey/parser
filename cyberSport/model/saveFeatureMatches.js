@@ -20,7 +20,12 @@ async function saveFeatureMatches(tables, matches) {
                 first_team_id          : +match.firstTeamID,
                 second_team_id         : +match.secondTeamID,
                 date                   : new Date(match.date),
-                time                   : match.time
+                time                   : match.time,
+                first_team_win_probability     : 0,
+                second_team_win_probability    : 0,
+                absolute_difference            : 0,
+                first_equilibrium_coefficient  : 0,
+                second_equilibrium_coefficient : 0
             });
         }
         catch (err) {

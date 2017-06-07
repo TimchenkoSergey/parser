@@ -95,10 +95,13 @@ async function updatePlayerHistory(tables, player, playerInDb, teams, events) {
             else {
                 id++;
                 item.historyID = id;
+                id++;
                 item.cups = [];
                 item.playerID = playerInDb.player_id;
                 item.teamID = await getTeamId(teams, item.teamID, tables);
-                await savePlayerHistory(tables, [ item ]);
+                if (item.teamID !== 0) {
+                    await savePlayerHistory(tables, [ item ]);
+                }
             }
         });
     }

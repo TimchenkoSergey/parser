@@ -31,7 +31,6 @@ async function savePlayerHistory(tables, histories) {
             }
         }
         catch (err) {
-            console.log(err);
         }
     });
 }

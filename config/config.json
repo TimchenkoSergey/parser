@@ -15,8 +15,5 @@
     "name"     : "dota",
     "userName" : "root",
     "password" : "sst291196meiddD"
-  },
-  "oddSport" : {
-    "baseUrl" : "http://www.oddsportal.com/results/"
   }
 }

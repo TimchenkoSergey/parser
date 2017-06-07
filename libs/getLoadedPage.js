@@ -1,6 +1,6 @@
-import sendRequest   from '../../libs/sendRequest';
-import getLoadedHtml from '../../libs/getLoadedHtml';
-import config        from '../../config';
+import sendRequest   from './sendRequest';
+import getLoadedHtml from './getLoadedHtml';
+import config        from '../config';
 
 export default getLoadedPage;
 
@@ -14,7 +14,7 @@ export default getLoadedPage;
  * @return {object} DOM объект построеный для страници по переданой ссылке.
  **/
 async function getLoadedPage(link) {
-    const response  = await sendRequest(config.get('baseUrl') + link);
+    const response = await sendRequest(config.get('baseUrl') + link);
     
     return getLoadedHtml(response.body);
 }

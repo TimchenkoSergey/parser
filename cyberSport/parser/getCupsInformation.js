@@ -2,7 +2,7 @@ import getUrlsList     from './getUrlsList';
 import downloadImage   from '../../libs/downloadImage';
 import getGameId       from '../../libs/getGameId';
 import isValid         from './isValid';
-import getLoadedPage   from './getLoadedPage';
+import getLoadedPage   from '../../libs/getLoadedPage';
 import getTrimString   from '../../libs/getTrimString';
 
 const CUP_LINK_SELECTOR    = '.main-wrap .main #tournaments-list tr td a';

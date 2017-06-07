@@ -3,7 +3,7 @@ import isNextPageExist from './isNextPageExist';
 import getTeamID       from './getTeamID';
 import getEventID      from './getEventID';
 import isValid         from './isValid';
-import getLoadedPage   from './getLoadedPage';
+import getLoadedPage   from '../../libs/getLoadedPage';
 import getTrimString   from '../../libs/getTrimString';
 
 const MATCH_ROWS_SELECTOR        = '.main-wrap .main .b-match-list tr';
@@ -33,7 +33,7 @@ async function getMatchesPastInformation(url, teams, events) {
     let matches = [];
     let id      = 1;
 
-    for (let i = 1; i < 2; i++) {
+    for (let i = 1; ; i++) {
         const $    = await getLoadedPage(url + i);
         const rows = $(MATCH_ROWS_SELECTOR);
 
