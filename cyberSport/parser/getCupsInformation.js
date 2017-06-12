@@ -1,6 +1,6 @@
 import getUrlsList     from './getUrlsList';
 import downloadImage   from '../../libs/downloadImage';
-import getGameId       from '../../libs/getGameId';
+import getGameId       from '../../libs/getGameIdByClass';
 import isValid         from './isValid';
 import getLoadedPage   from '../../libs/getLoadedPage';
 import getTrimString   from '../../libs/getTrimString';

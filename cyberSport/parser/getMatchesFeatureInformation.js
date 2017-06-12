@@ -1,5 +1,5 @@
 import isValid         from './isValid';
-import getGameFromList from '../../libs/getGameId';
+import getGameId       from '../../libs/getGameIdByClass';
 import isNextPageExist from './isNextPageExist';
 import getTeamID       from './getTeamID';
 import getEventID      from './getEventID';
@@ -36,17 +36,17 @@ async function getMatchesFeatureInformation(url, teams, events) {
         const $    = await getLoadedPage(url + i);
         const rows = $(MATCH_ROWS_SELECTOR);
 
-        rows.each(function (index) {
+        rows.each(async function (index) {
             try {
                 if (index !== 0) {
-                    const game = getGameFromList($(this).find(MATCH_GAME_SELECTOR).attr('class'));
+                    const game = await getGameId($(this).find(MATCH_GAME_SELECTOR).attr('class'));
                     const dateTime = getDateTime($(this).find(MATCH_DATE_TIME_SELECTOR).attr('datetime'),
                                                  $(this).find(MATCH_DATE_TIME_SELECTOR).attr('title'));
                     const firstTeam = getTrimString($(this).find(MATCH_FIRST_TEAM_SELECTOR).text());
                     const secondTeam = getTrimString($(this).find(MATCH_SECOND_TEAM_SELECTOR).text());
                     const event = $(this).find(MATCH_EVENT_SELECTOR).text();
 
-                    if (game !== '' && allFilled({
+                    if (game !== 0 && allFilled({
                             date: dateTime.date,
                             time: dateTime.time,
                             firstTeam,
@@ -57,7 +57,7 @@ async function getMatchesFeatureInformation(url, teams, events) {
                         const secondTeamID = getTeamID(teams, secondTeam, game);
                         const eventID = getEventID(events, event);
 
-                        matches.push(getMatch(id, dateTime.time, dateTime.date, firstTeamID, secondTeamID, eventID));
+                        matches.push(getMatch(id, dateTime.time, dateTime.date, firstTeamID, secondTeamID, eventID, firstTeam, secondTeam, game));
                         id++;
                     }
                 }
@@ -87,16 +87,22 @@ async function getMatchesFeatureInformation(url, teams, events) {
  * @param {number} firstTeamID Id первой команды.
  * @param {number} secondTeamID Id второй команды.
  * @param {number} eventID Id турнира в котором проводится игра.
+ * @param {string} firstTeamName Имя команды.
+ * @param {string} secondTeamName Имя команды.
+ * @param {number} gameId Id игры.
  * @return {object} Объект содержащий данные.
  **/
-function getMatch(id, time, date, firstTeamID, secondTeamID, eventID) {
+function getMatch(id, time, date, firstTeamID, secondTeamID, eventID, firstTeamName, secondTeamName, gameId) {
     return {
         id,
         time,
         date,
         firstTeamID,
         secondTeamID,
-        eventID
+        eventID,
+        firstTeamName,
+        secondTeamName,
+        gameId
     };
 }
 

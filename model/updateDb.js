@@ -6,6 +6,8 @@ import updateFutureMatches from '../cyberSport/model/updateFutureMatches';
 import updatePlayers       from '../cyberSport/model/updatePlayers';
 import updateGbRating      from '../cyberSport/model/updateGbRating';
 import updateCoefficients  from '../cyberSport/model/updateCoefficients';
+import egb from '../egb/egb';
+import oneX from '../oneX/oneX';
 
 export default updateDb;
 
@@ -24,11 +26,13 @@ export default updateDb;
 async function updateDb(teams, events, players, pastMatches, featureMatches) {
     const models = await initial();
 
-    /*await updateTeams(models, teams);
+    await updateTeams(models, teams);
     await updateEvents(models, events);
     await updatePlayers(models, players, teams, events);
     await updatePastMatches(models, pastMatches);
     await updateFutureMatches(models, featureMatches);
-    await updateGbRating(models);*/
+    await updateGbRating(models);
     await updateCoefficients(models);
+    await egb(models);
+    await oneX(models);
 }

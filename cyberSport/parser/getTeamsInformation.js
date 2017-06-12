@@ -1,6 +1,6 @@
 import getUrlsList     from './getUrlsList';
 import downloadImage   from '../../libs/downloadImage';
-import getGameId       from '../../libs/getGameId';
+import getGameId       from '../../libs/getGameIdByClass';
 import isValid         from './isValid';
 import getLoadedPage   from '../../libs/getLoadedPage';
 import getTrimString   from '../../libs/getTrimString';
@@ -60,7 +60,7 @@ async function getTeamsInformation(url) {
  * @param {string} name Название команды.
  * @param {string} logo Путь к логотипу команды.
  * @param {string} rating Рэйтинг команды.
- * @param {number} gamId Игра в которую команда играет.
+ * @param {number} gameId Игра в которую команда играет.
  * @return {object} Объект содержащий данные.
  **/
 function getTeam(id, name, logo, rating, gameId) {

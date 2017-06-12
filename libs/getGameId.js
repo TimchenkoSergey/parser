@@ -9,29 +9,22 @@ let gamesTable = null;
  * @function
  * @name getGameId
  * @description
- * Из переданного класса элемента с иконкой игры,
- * определяет что это за игра выбирая из списка заданых игр.
- * Список храниться в базе данных в таблице games.
+ * Возращает Id переданой игры.
  *
- * @param {string} elementClass Класс элемента с иконкой игры.
+ * @param {string} gameName Название игры.
  * @return {number} game ID игры.
  **/
-async function getGameId(elementClass) {
+async function getGameId(gameName) {
     let game;
     
-    if (elementClass) {
-        if (!gamesTable) {
-            const tables = await initial();
-            gamesTable   = await model.findAll(tables.game, {});
-
-        }
-        
-        const classLower = elementClass.toLowerCase();
-
-        game = gamesTable.find(function (item) {
-            return classLower.indexOf(item.game_name) >= 0;
-        });
+    if (!gamesTable) {
+        const tables = await initial();
+        gamesTable   = await model.findAll(tables.game, {});
     }
+    
+    game = gamesTable.find(function (item) {
+        return item.game_name == gameName;
+    });
 
     return game ? game.game_id : 0;
 }

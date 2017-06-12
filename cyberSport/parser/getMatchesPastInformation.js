@@ -1,4 +1,4 @@
-import getGameFromList from '../../libs/getGameId';
+import getGameId       from '../../libs/getGameIdByClass';
 import isNextPageExist from './isNextPageExist';
 import getTeamID       from './getTeamID';
 import getEventID      from './getEventID';
@@ -37,10 +37,10 @@ async function getMatchesPastInformation(url, teams, events) {
         const $    = await getLoadedPage(url + i);
         const rows = $(MATCH_ROWS_SELECTOR);
 
-        rows.each(function (index) {
+        rows.each(async function (index) {
             try {
                 if (index !== 0) {
-                    const game = getGameFromList($(this).find(MATCH_GAME_SELECTOR).attr('class'));
+                    const game = await getGameId($(this).find(MATCH_GAME_SELECTOR).attr('class'));
                     const dateTime = getDateTime($(this).find(MATCH_DATE_TIME_SELECTOR).attr('datetime'),
                                                  $(this).find(MATCH_DATE_TIME_SELECTOR).attr('title'));
                     const result = getResult($(this).find(MATCH_RESULT_SELECTOR).text());
@@ -48,7 +48,7 @@ async function getMatchesPastInformation(url, teams, events) {
                     const secondTeam = getTrimString($(this).find(MATCH_SECOND_TEAM_SELECTOR).text());
                     const event = $(this).find(MATCH_EVENT_SELECTOR).text();
 
-                    if (game !== '' && allFilled({
+                    if (game !== 0 && allFilled({
                             date: dateTime.date,
                             time: dateTime.time,
                             resultFirst: result.first,
