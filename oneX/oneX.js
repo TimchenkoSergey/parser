@@ -25,15 +25,20 @@ async function oneX(tables) {
     const matchesInDb = await model.findAll(tables.matchesFeature, {});
 
     for (let i = 0, len = bets.length; i < len; i++) {
-        const game = getGameName(bets[i].L);
+        try {
+            const game = getGameName(bets[i].L);
 
-        if (game) {
-            const gameId = await getGameId(game);
-            const match  = getMatch(bets[i]);
+            if (game) {
+                const gameId = await getGameId(game);
+                const match  = getMatch(bets[i]);
 
-            if (isCoefficientGraterThanZero(match)) {
-                await saveCoefficients(match, matchesInDb, gameId, bookmaker, tables);
+                if (isCoefficientGraterThanZero(match)) {
+                    await saveCoefficients(match, matchesInDb, gameId, bookmaker, tables);
+                }
             }
+        }
+        catch (err) {
+            console.log(err);
         }
     }
 }

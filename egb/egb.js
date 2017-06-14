@@ -25,15 +25,20 @@ async function getEGB(tables) {
     const matchesInDb = await model.findAll(tables.matchesFeature, {});
 
     for (let i = 0, len = bets.length; i < len; i++) {
-        const game = getGameName(bets[i].game);
-        
-        if (game) {
-            const gameId = await getGameId(game);
-            const match  = getMatch(bets[i]);
+        try {
+            const game = getGameName(bets[i].game);
 
-            if (isCoefficientGraterThanZero(match)) {
-                await saveCoefficients(match, matchesInDb, gameId, bookmaker, tables);
+            if (game) {
+                const gameId = await getGameId(game);
+                const match  = getMatch(bets[i]);
+
+                if (isCoefficientGraterThanZero(match)) {
+                    await saveCoefficients(match, matchesInDb, gameId, bookmaker, tables);
+                }
             }
+        }
+        catch (err) {
+            console.log(err);
         }
     }
 }

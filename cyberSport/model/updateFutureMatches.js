@@ -17,16 +17,21 @@ async function updateFutureMatches(tables, matches) {
     const teamsInDb = await model.findAll(tables.team, {});
     
     matches.forEach(function (item) {
-        const firstTeamInDB  = getId(teamsInDb, item, 'firstTeamName');
-        const secondTeamInDB = getId(teamsInDb, item, 'secondTeamName');
+        try {
+            const firstTeamInDB  = getId(teamsInDb, item, 'firstTeamName');
+            const secondTeamInDB = getId(teamsInDb, item, 'secondTeamName');
 
-        if (firstTeamInDB && secondTeamInDB) {
-            item.firstTeamID  = firstTeamInDB.team_id;
-            item.secondTeamID = secondTeamInDB.team_id;
+            if (firstTeamInDB && secondTeamInDB) {
+                item.firstTeamID  = firstTeamInDB.team_id;
+                item.secondTeamID = secondTeamInDB.team_id;
+            }
+            else {
+                item.firstTeamID  = 0;
+                item.secondTeamID = 0;
+            }
         }
-        else {
-            item.firstTeamID  = 0;
-            item.secondTeamID = 0;
+        catch (err) {
+            console.log(err);
         }
     });
 

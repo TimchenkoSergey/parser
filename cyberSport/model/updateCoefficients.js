@@ -7,26 +7,31 @@ async function updateCoefficients(tables) {
     const upcomingMatches = await model.findAll(tables.matchesFeature, {});
 
     for (let i = 0, len = upcomingMatches.length; i < len; i++) {
-        const firstTeam  = getTeamById(teams, upcomingMatches[i].first_team_id);
-        const secondTeam = getTeamById(teams, upcomingMatches[i].second_team_id);
+        try {
+            const firstTeam  = getTeamById(teams, upcomingMatches[i].first_team_id);
+            const secondTeam = getTeamById(teams, upcomingMatches[i].second_team_id);
 
-        if (firstTeam && secondTeam && isProbabilityNotNull(firstTeam) && isProbabilityNotNull(secondTeam)) {
-            const probability        = getRealWinProbability(firstTeam, secondTeam);
-            const absoluteDifference = getAbsoluteDifferenceOfProbabilities(probability);
-            const firstEquilibriumCoefficient  = getEquilibriumCoefficient(probability.firstTeamWinProbability);
-            const secondEquilibriumCoefficient = getEquilibriumCoefficient(probability.secondTeamWinProbability);
+            if (firstTeam && secondTeam && isProbabilityNotNull(firstTeam) && isProbabilityNotNull(secondTeam)) {
+                const probability        = getRealWinProbability(firstTeam, secondTeam);
+                const absoluteDifference = getAbsoluteDifferenceOfProbabilities(probability);
+                const firstEquilibriumCoefficient  = getEquilibriumCoefficient(probability.firstTeamWinProbability);
+                const secondEquilibriumCoefficient = getEquilibriumCoefficient(probability.secondTeamWinProbability);
 
-            await model.update(tables.matchesFeature,
-                {
-                    competition_feature_id : upcomingMatches[i].competition_feature_id
-                },
-                {
-                    first_team_win_probability     : probability.firstTeamWinProbability,
-                    second_team_win_probability    : probability.secondTeamWinProbability,
-                    absolute_difference            : absoluteDifference,
-                    first_equilibrium_coefficient  : firstEquilibriumCoefficient,
-                    second_equilibrium_coefficient : secondEquilibriumCoefficient
-                });
+                await model.update(tables.matchesFeature,
+                    {
+                        competition_feature_id : upcomingMatches[i].competition_feature_id
+                    },
+                    {
+                        first_team_win_probability     : probability.firstTeamWinProbability,
+                        second_team_win_probability    : probability.secondTeamWinProbability,
+                        absolute_difference            : absoluteDifference,
+                        first_equilibrium_coefficient  : firstEquilibriumCoefficient,
+                        second_equilibrium_coefficient : secondEquilibriumCoefficient
+                    });
+            }
+        }
+        catch (err) {
+            console.log(err);
         }
     }
 }
